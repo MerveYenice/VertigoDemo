@@ -37,6 +37,11 @@ public class SpawnManager : MonoBehaviour
     }
 
     #region SPAWN ALGORITHM
+    /// <summary>
+	/// SpawnPointleri uzakliga gore spawn etmeye calisir, bulamazsa, takim uzakligina gore spawn etmeye calisir.
+	/// </summary>
+    /// <param name="team"></param>
+    /// <returns>Uygun olan SpawnPoint'i döner.</returns>
     public SpawnPoint GetSharedSpawnPoint(PlayerTeam team)
     {
      
@@ -60,10 +65,10 @@ public class SpawnManager : MonoBehaviour
         return spawnPoint;
     }
 
-	// GetSpawnPointsByDistanceSpawning metodu Suitable spawn noktaları arasından en yakın düşmana olan uzaklığı 
-    // _minDistanceToClosestEnemy'den büyük olan ve 
-    // en yakın dosta olan uzaklığı _minMemberDistance'dan büyük olan ve
-    // SpawnTimer'ı 2 den büyük spawn noktalarını seçer.
+    /// <summary>
+	/// Suitable spawn noktaları arasından en yakın düşmana olan uzaklığı _minDistanceToClosestEnemy'den büyük olan ve en yakın dosta olan uzaklığı _minMemberDistance'dan büyük olan veSpawnTimer'ı 2 den büyük spawn noktalarını seçer.
+	/// </summary>
+    /// <param name="suitableSpawnPoints"></param>
     private void GetSpawnPointsByDistanceSpawning(ref List<SpawnPoint> suitableSpawnPoints)
     {
        Debug.Log("------------GET_SPAWN_BY_DIST------"); 
@@ -128,7 +133,9 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    //CalculateDistancesForSpawnPoints metodu _sharedSpawnPoints içindeki herbir spawnpoint için enyakın dost/düsman mesafesini hesaplar
+	/// <summary>
+    /// _sharedSpawnPoints içindeki herbir spawnpoint için enyakın dost/düsman mesafesini hesaplar
+	/// </summary>  
     private void CalculateDistancesForSpawnPoints(PlayerTeam playerTeam)
     {
         for (int i = 0; i < _sharedSpawnPoints.Count; i++)
@@ -139,8 +146,12 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    // GetDistanceToClosestMember methodu player disabled değilse ve playerın takımı parametre olarak alınan playerTeam değerine eşitse
-    // verilen pozisyona göre en yakın takım üyesinin mesafesini return eder.
+    /// <summary>
+	/// player disabled değilse ve playerın takımı parametre olarak alınan playerTeam değerine eşitse verilen pozisyona göre en yakın takım üyesinin mesafesini verir.
+	/// </summary>
+    /// <param name="position"></param>
+    /// <param name="playerTeam"></param>
+    /// <returns>En yakın takım üyesinin mesafesini return eder.</returns>
     private float GetDistanceToClosestMember(Vector3 position, PlayerTeam playerTeam)
     {
         // başlangıcta _closestDistance maxValue olmalı
