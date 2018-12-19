@@ -39,34 +39,30 @@ public class SpawnManager : MonoBehaviour
     #region SPAWN ALGORITHM
     /// <summary>
 	/// SpawnPointleri uzakliga gore spawn etmeye calisir, bulamazsa, takim uzakligina gore spawn etmeye calisir.
+    /// sonuclar icinden rastgele spawn point secer
+    /// seçilen spawnpoint icin timer baslat
 	/// </summary>
-    /// <param name="team"></param>
+    /// <param name="team">Takım Adı</param>
     /// <returns>Uygun olan SpawnPoint'i döner.</returns>
     public SpawnPoint GetSharedSpawnPoint(PlayerTeam team)
     {
-     
         List<SpawnPoint> spawnPoints = new List<SpawnPoint>(_sharedSpawnPoints.Count);
         CalculateDistancesForSpawnPoints(team);
-        // once uzakliga gore spawn etmeye calis
         GetSpawnPointsByDistanceSpawning(ref spawnPoints);
-        // uygun uzaklikta spawn poin bulamadiysan
-        // takim uzakligina gore spawn etmeye calis
         if (spawnPoints.Count <= 0)
         {
             GetSpawnPointsBySquadSpawning(team, ref spawnPoints);
             Debug.Log("uygun uzaklıkta spawnPoint bulunamadı, squadSpawninge göre bulundu.");
         }
-        // sonuclar icinden rastgele spawn point sec
         SpawnPoint spawnPoint = spawnPoints.Count <= 1 ? spawnPoints[0] : spawnPoints[_random.Next(0, (int)((float)spawnPoints.Count * .5f))];
-        
-        // bu spawnpoint icin timer baslat
         spawnPoint.StartTimer();
         
         return spawnPoint;
     }
 
     /// <summary>
-	/// Suitable spawn noktaları arasından en yakın düşmana olan uzaklığı _minDistanceToClosestEnemy'den büyük olan ve en yakın dosta olan uzaklığı _minMemberDistance'dan büyük olan veSpawnTimer'ı 2 den büyük spawn noktalarını seçer.
+	/// Suitable spawn noktaları arasından en yakın düşmana olan uzaklığı _minDistanceToClosestEnemy'den büyük olan ve en yakın dosta olan uzaklığı 
+    ///_minMemberDistance'dan büyük olan veSpawnTimer'ı 2 den büyük spawn noktalarını seçer.
 	/// </summary>
     /// <param name="suitableSpawnPoints"></param>
     private void GetSpawnPointsByDistanceSpawning(ref List<SpawnPoint> suitableSpawnPoints)
@@ -90,12 +86,15 @@ public class SpawnManager : MonoBehaviour
                     Debug.Log(sp+" filtered out since it was too close to an enemy");
                 }
        }
-       Debug.Log("Found "+filteredPoints.Count+" suitable points");
         filteredPoints.Sort((x, y) => x.DistanceToClosestFriend.CompareTo(y.DistanceToClosestFriend));
         suitableSpawnPoints = filteredPoints;  
     }
-
-    // takim üyelerinin uzakligina gore spawn etmeye calis
+    /// <summary>
+	/// takim üyelerinin uzakligina gore spawn etmeye calisir 
+    /// ve takim arkadaslarina olan uzakliklarina gore sort eder
+	/// </summary>
+    /// <param name="team">Takım Adı</param>
+    /// <param name="suitableSpawnPoints">Uygun Spawn Noktaları</param>
     private void GetSpawnPointsBySquadSpawning(PlayerTeam team, ref List<SpawnPoint> suitableSpawnPoints)
     {
         if (suitableSpawnPoints == null)
@@ -103,7 +102,6 @@ public class SpawnManager : MonoBehaviour
             suitableSpawnPoints = new List<SpawnPoint>();
         }
         suitableSpawnPoints.Clear();
-        // takim arkadaslarina olan uzakliklarina gore sort et
         _sharedSpawnPoints.Sort(delegate (SpawnPoint a, SpawnPoint b)
         {
             if (a.DistanceToClosestFriend == b.DistanceToClosestFriend)
@@ -136,6 +134,7 @@ public class SpawnManager : MonoBehaviour
 	/// <summary>
     /// _sharedSpawnPoints içindeki herbir spawnpoint için enyakın dost/düsman mesafesini hesaplar
 	/// </summary>  
+    /// <param name="playerTeam">Takım Adı</param>
     private void CalculateDistancesForSpawnPoints(PlayerTeam playerTeam)
     {
         for (int i = 0; i < _sharedSpawnPoints.Count; i++)

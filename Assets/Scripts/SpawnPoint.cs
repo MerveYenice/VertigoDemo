@@ -48,7 +48,7 @@ public class SpawnPoint : MonoBehaviour
     }
     public void StartTimer()
 	{
-		SpawnTimer = 60f;
+		SpawnTimer = 2f;
 	}
 
 	private void Update()
