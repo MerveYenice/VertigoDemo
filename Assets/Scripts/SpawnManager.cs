@@ -28,7 +28,11 @@ public class SpawnManager : MonoBehaviour
 
     public DummyPlayer PlayerToBeSpawned;
     public DummyPlayer[] DummyPlayers;
-
+    
+    /// <summary>
+    /// Start fonksiyonundan önce çalıştırılır, ayrıca bir prefab Instantiate edildiği anda da çalıştırılır.
+    /// _sharedSpawnPoints'i ve DummyPlayers'i initialize eder.
+    /// </summary>
     private void Awake()
     {
 		_sharedSpawnPoints.AddRange(FindObjectsOfType<SpawnPoint>());
