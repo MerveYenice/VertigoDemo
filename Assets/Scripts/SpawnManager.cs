@@ -38,8 +38,8 @@ public class SpawnManager : MonoBehaviour
 
     #region SPAWN ALGORITHM
     /// <summary>
-    /// SpawnPointleri uzakliga gore spawn etmeye calisir, bulamazsa, takim uzakligina gore spawn etmeye calisir.
-    /// sonuclar icinden rastgele spawn point secer
+    /// SpawnPointleri uzaklığa gore spawn etmeye calışır, bulamazsa, takım uzaklığına gore spawn etmeye calışır.
+    /// sonuçlar içinden rastgele spawn point seçer
     /// seçilen spawnpoint icin timer baslat
     /// </summary>
     /// <param name="team">Takım Adı</param>
@@ -62,7 +62,7 @@ public class SpawnManager : MonoBehaviour
 
     /// <summary>
     /// Suitable spawn noktaları arasından en yakın düşmana olan uzaklığı _minDistanceToClosestEnemy'den büyük olan ve en yakın dosta olan uzaklığı 
-    ///_minMemberDistance'dan büyük olan veSpawnTimer'ı 2 den büyük spawn noktalarını seçer.
+    ///_minMemberDistance'dan büyük olan ve SpawnTimer'ı 0 ve 0dan küçük spawn noktalarını seçer.
     /// </summary>
     /// <param name="suitableSpawnPoints"></param>
     private void GetSpawnPointsByDistanceSpawning(ref List<SpawnPoint> suitableSpawnPoints)
@@ -90,8 +90,8 @@ public class SpawnManager : MonoBehaviour
         suitableSpawnPoints = filteredPoints;  
     }
     /// <summary>
-    /// takim üyelerinin uzakligina gore spawn etmeye calisir 
-    /// ve takim arkadaslarina olan uzakliklarina gore sort eder
+    /// takım üyelerinin uzaklığına gore spawn etmeye calışır 
+    /// ve takım arkadaşlarına olan uzaklıklarına gore sort eder
     /// </summary>
     /// <param name="team">Takım Adı</param>
     /// <param name="suitableSpawnPoints">Uygun Spawn Noktaları</param>
@@ -114,9 +114,9 @@ public class SpawnManager : MonoBehaviour
             }
             return -1;
         });
-        //herhangi bir takim arkadasindan maxDistanceToClasestFriend'ten daha uzak olmasin ve
+        //herhangi bir takim arkadaşından maxDistanceToClasestFriend'ten daha uzak olmasın ve
         //current span point etrafında minDistance'tan daha yakın dost-düsman bulunmasın ve
-        // SpawnPoint'in spawn timer'i bitmis olsun
+        //SpawnPoint'in spawn timer'i bitmiş olsun
         for (int i = 0; i < _sharedSpawnPoints.Count && _sharedSpawnPoints[i].DistanceToClosestFriend <= _maxDistanceToClosestFriend; i++)
         {
             if (!(_sharedSpawnPoints[i].DistanceToClosestFriend <= _minMemberDistance) && 
